@@ -22,4 +22,9 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('email_verify_notice');
     Route::get('/email_verification/verify', 'EmailVerificationController@verify')
         ->name('email_verification.verify');
+
+    Route::group(['middleware' => 'email_verified'], function () {
+        Route::get('user_addresses', 'UserAddressController@index')
+            ->name('user_addresses.index');
+    });
 });
