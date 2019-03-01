@@ -44,4 +44,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAddress::class);
     }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function favoriteProducts()
+    {
+        return $this->belongsToMany(Product::class, 'user_favorite_products')
+            ->withTimestamps()
+            ->orderBy('user_favorite_products.created_at', 'desc');
+    }
 }
