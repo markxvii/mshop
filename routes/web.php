@@ -45,6 +45,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('orders', 'OrderController@store')->name('orders.store');
         Route::get('orders', 'OrderController@index')->name('orders.index');
         Route::get('orders/{order}', 'OrderController@show')->name('orders.show');
+        Route::get('payment/{order}/alipay', 'PaymentController@payByAlipay')->name('payment.alipay');
+        Route::get('payment/alipay/return', 'PaymentController@alipayReturn')->name('payment.alipay.return');
+        Route::post('orders/{order}/received', 'OrderController@received')->name('orders.received');
+        Route::get('orders/{order}/review', 'OrderController@review')->name('orders.review.show');
+        Route::post('orders/{order}/review', 'OrderController@sendReview')->name('orders.review.store');
+        Route::post('orders/{order}/apply_refund', 'OrderController@applyRefund')->name('orders.apply_refund');
+        Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
     });
 });
+Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');

@@ -63,6 +63,30 @@
                                 {!! $product->description !!}
                             </div>
                             <div role="tabpanel" class="tab-pane" id="product-reviews-tab">
+                                {{--评论列表--}}
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <td>用户</td>
+                                        <td>商品</td>
+                                        <td>评分</td>
+                                        <td>评价</td>
+                                        <td>时间</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($reviews as $review)
+                                        <tr>
+                                            <td>{{ $review->order->user->name }}</td>
+                                            <td>{{ $review->productSku->title }}</td>
+                                            <td>{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</td>
+                                            <td>{{ $review->review }}</td>
+                                            <td>{{ $review->reviewed_at->format('Y-m-d H:i') }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                {{--评论列表--}}
                             </div>
                         </div>
                     </div>
@@ -118,16 +142,16 @@
             //加入购物车按钮点击事件
             $('.btn-add-to-cart').click(function () {
                 //请求加入购物车接口
-                axios.post('{{ route('cart.add') }}',{
+                axios.post('{{ route('cart.add') }}', {
                     sku_id: $('label.active input[name=skus]').val(),
-                    amount:$('.cart_amount input').val(),
+                    amount: $('.cart_amount input').val(),
                 })
                     .then(function () {
                         swal('加入购物车成功', '', 'success');
-                    },function (error) {
+                    }, function (error) {
                         if (error.response.status === 401) {
                             swal('请先登录', '', 'error');
-                        }else if (error.response.status === 422) {
+                        } else if (error.response.status === 422) {
                             // http 状态码为 422 代表用户输入校验失败
                             var html = '<div>';
                             _.each(error.response.data.errors, function (errors) {

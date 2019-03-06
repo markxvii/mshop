@@ -75,6 +75,19 @@
                                     <textarea name="remark" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
+                            {{--优惠码--}}
+                            <div class="form-group">'
+                                <label class="control-label col-sm-3">优惠码</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" name="coupon_code">
+                                    <span class="help-block" id="coupon_desc"></span>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-success" id="btn-check-coupon">检查</button>
+                                    <button type="button" class="btn btn-danger" style="display: none;" id="btn-cancel-coupon">取消</button>
+                                </div>
+                            </div>
+                            {{--优惠码--}}
                             <div class="form-group">
                                 <div class="col-sm-offset-3 col-sm-3">
                                     <button type="button" class="btn btn-primary btn-create-order">提交订单</button>
@@ -137,6 +150,7 @@
                     address_id: $('#order-form').find('select[name=address]').val(),
                     items: [],
                     remark: $('#order-form').find('textarea[name=remark]').val(),
+                    coupon_code:$('input[name=coupon_code]').val(),//从优惠码输入框中获取优惠码
                 };
                 // 遍历 <table> 标签内所有带有 data-id 属性的 <tr> 标签，也就是每一个购物车中的商品 SKU
                 $('table tr[data-id]').each(function () {
@@ -162,7 +176,7 @@
                     .then(function (response) {
                         swal('订单提交成功', '', 'success')
                             .then(()=>{
-                                location.href='/orders'+response.data.id;
+                                location.href='/orders/'+response.data.id;
                             });
                     }, function (error) {
                         if (error.response.status === 422) {
@@ -175,11 +189,51 @@
                             });
                             html += '</div>';
                             swal({content: $(html)[0], icon: 'error'})
+                        }else if (error.response.status === 403) {
+                            swal(error.response.data.msg, '', 'error');
                         } else {
                             // 其他情况应该是系统挂了
                             swal('系统错误', '', 'error');
                         }
                     });
+            });
+
+            //检查按钮点击事件
+            $('#btn-check-coupon').click(function () {
+                //获取用户输入的优惠码
+                var code=$('input[name=coupon_code]').val();
+                //如果没有输入则弹出提示
+                if (!code) {
+                    swal('请输入优惠码！', '', 'warning');
+                    return;
+                }
+                //调用检查接口
+                axios.get('/coupon_codes/'+encodeURIComponent(code))
+                    .then(function (response) {
+                        $('#coupon_desc').text(response.data.description);
+                        $('input[name=coupon_code]').prop('readonly',true);
+                        $('#btn-cancel-coupon').show();
+                        $('#btn-check-coupon').hide();
+                    },function (error) {
+                        // 如果返回码是 404，说明优惠券不存在
+                        if (error.response.status === 404) {
+                            swal('优惠码不存在', '', 'error');
+                        }else if (error.response.status === 403) {
+                            //如果返回码时403，说明有其他条件不满足
+                            swal(error.response.data.msg, '', 'error');
+                        } else {
+                            //其他错误
+                            swal('系统内部错误', '', 'error');
+                        }
+                    })
+            });
+
+            //隐藏 按钮点击事件
+            $('#btn-cancel-coupon').click(function () {
+                $('#coupon_desc').text('');
+                $('input[name=coupon_code]').prop('readonly', false);
+                $('#btn-cancel-coupon').hide();
+                $('#btn-check-coupon').show();
             });
         });
     </script>
