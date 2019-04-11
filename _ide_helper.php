@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.5.45 on 2019-03-04 01:37:17.
+ * Generated for Laravel 5.5.45 on 2019-04-11 11:14:04.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -6983,69 +6983,6 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
-         * Migrate the delayed jobs that are ready to the regular queue.
-         *
-         * @param string $from
-         * @param string $to
-         * @return array 
-         * @static 
-         */ 
-        public static function migrateExpiredJobs($from, $to)
-        {
-            return \Illuminate\Queue\RedisQueue::migrateExpiredJobs($from, $to);
-        }
-        
-        /**
-         * Delete a reserved job from the queue.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @return void 
-         * @static 
-         */ 
-        public static function deleteReserved($queue, $job)
-        {
-            \Illuminate\Queue\RedisQueue::deleteReserved($queue, $job);
-        }
-        
-        /**
-         * Delete a reserved job from the reserved queue and release it.
-         *
-         * @param string $queue
-         * @param \Illuminate\Queue\Jobs\RedisJob $job
-         * @param int $delay
-         * @return void 
-         * @static 
-         */ 
-        public static function deleteAndRelease($queue, $job, $delay)
-        {
-            \Illuminate\Queue\RedisQueue::deleteAndRelease($queue, $job, $delay);
-        }
-        
-        /**
-         * Get the queue or return the default.
-         *
-         * @param string|null $queue
-         * @return string 
-         * @static 
-         */ 
-        public static function getQueue($queue)
-        {
-            return \Illuminate\Queue\RedisQueue::getQueue($queue);
-        }
-        
-        /**
-         * Get the underlying Redis instance.
-         *
-         * @return \Illuminate\Contracts\Redis\Factory 
-         * @static 
-         */ 
-        public static function getRedis()
-        {
-            return \Illuminate\Queue\RedisQueue::getRedis();
-        }
-        
-        /**
          * Get the expiration timestamp for an object-based queue handler.
          *
          * @param mixed $job
@@ -7055,7 +6992,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobExpiration($job)
         {
             //Method inherited from \Illuminate\Queue\Queue            
-            return \Illuminate\Queue\RedisQueue::getJobExpiration($job);
+            return \Illuminate\Queue\SyncQueue::getJobExpiration($job);
         }
         
         /**
@@ -7068,7 +7005,7 @@ namespace Illuminate\Support\Facades {
         public static function setContainer($container)
         {
             //Method inherited from \Illuminate\Queue\Queue            
-            \Illuminate\Queue\RedisQueue::setContainer($container);
+            \Illuminate\Queue\SyncQueue::setContainer($container);
         }
          
     }
@@ -13155,6 +13092,38 @@ namespace Encore\Admin\Facades {
         public static function extend($name, $class)
         {
             \Encore\Admin\Admin::extend($name, $class);
+        }
+        
+        /**
+         * 
+         *
+         * @param callable $callback
+         * @static 
+         */ 
+        public static function booting($callback)
+        {
+            return \Encore\Admin\Admin::booting($callback);
+        }
+        
+        /**
+         * 
+         *
+         * @param callable $callback
+         * @static 
+         */ 
+        public static function booted($callback)
+        {
+            return \Encore\Admin\Admin::booted($callback);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function disablePjax()
+        {
+            return \Encore\Admin\Admin::disablePjax();
         }
          
     }

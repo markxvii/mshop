@@ -5,7 +5,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2019-03-04 01:37:18.
+    * Generated on 2019-04-11 11:14:05.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -29,6 +29,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -121,7 +122,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -140,6 +141,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
@@ -160,6 +162,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -252,7 +255,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -271,6 +274,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
@@ -291,6 +295,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -383,7 +388,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -402,6 +407,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\App::make(0), map([
         '' => '@',
@@ -422,6 +428,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -514,7 +521,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -533,6 +540,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\App::makeWith(0), map([
         '' => '@',
@@ -553,6 +561,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -645,7 +654,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -664,6 +673,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\app(0), map([
         '' => '@',
@@ -684,6 +694,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -776,7 +787,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -795,6 +806,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
     override(\resolve(0), map([
         '' => '@',
@@ -815,6 +827,7 @@ namespace PHPSTORM_META {
         'Illuminate\Notifications\ChannelManager' => \Illuminate\Notifications\ChannelManager::class,
         'Illuminate\Routing\Contracts\ControllerDispatcher' => \Illuminate\Routing\ControllerDispatcher::class,
         'Illuminate\Session\Middleware\StartSession' => \Illuminate\Session\Middleware\StartSession::class,
+        'alipay' => \Yansongda\Pay\Gateways\Alipay::class,
         'auth' => \Illuminate\Auth\AuthManager::class,
         'auth.driver' => \Illuminate\Auth\SessionGuard::class,
         'auth.password' => \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
@@ -907,7 +920,7 @@ namespace PHPSTORM_META {
         'migration.repository' => \Illuminate\Database\Migrations\DatabaseMigrationRepository::class,
         'migrator' => \Illuminate\Database\Migrations\Migrator::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
+        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
@@ -926,6 +939,7 @@ namespace PHPSTORM_META {
         'view' => \Illuminate\View\Factory::class,
         'view.engine.resolver' => \Illuminate\View\Engines\EngineResolver::class,
         'view.finder' => \Illuminate\View\FileViewFinder::class,
+        'wechat_pay' => \Yansongda\Pay\Gateways\Wechat::class,
     ]));
 
     override(\Illuminate\Support\Arr::add(0), type(0));
