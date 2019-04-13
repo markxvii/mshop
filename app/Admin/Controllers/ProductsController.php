@@ -83,6 +83,7 @@ class ProductsController extends Controller
         $grid->on_sale('已上架')->display(function ($value) {
             return $value ? '是' : '否';
         });
+        $grid->column('category.name', '分类');
         $grid->price('价格');
         $grid->sold_count('销量');
         $grid->review_count('评论数');
@@ -136,6 +137,7 @@ class ProductsController extends Controller
         $form = new Form(new Product);
 
         $form->text('title', '商品名称')->rules('required');
+        $form->number('category_id', '分类');
         $form->image('image', '封面图片')->rules('required|image');
         $form->editor('description', '商品描述')->rules('required');
         $form->radio('on_sale', '上架')->options(['1' => '是', '0' => '否'])->default('0');
