@@ -36,17 +36,49 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="cart_amount"><label>数量</label><input type="text" class="form-control input-sm"
-                                                                             value="1"><span>件</span><span
-                                        class="stock"></span></div>
+                            @if ($product->type !== \App\Models\Product::TYPE_SECKILL)
+                                <div class="cart_amount"><label>数量</label><input type="text"
+                                                                                 class="form-control input-sm"
+                                                                                 value="1"><span>件</span><span
+                                            class="stock"></span></div>
+                            @endif
+                            {{--用户收货地址--}}
+                            @if ($product->type === \App\Models\Product::TYPE_SECKILL)
+                                <div class="user_address" style="margin-bottom: 20px;margin-top: 20px"><label
+                                            for="address">收货地址</label>
+                                    <select name="address_id" id="address" class="form-control">
+                                        @foreach(Auth::user()->addresses as $address)
+                                            <option id="address_id" value="{{$address->id}}">{{$address->full_address}}
+                                                -{{$address->contact_name}}-{{$address->contact_phone}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                            {{--用户收货地址--}}
                             <div class="buttons">
                                 @if ($favored)
                                     <button class="btn btn-danger btn-disfavor">取消收藏</button>
                                 @else
                                     <button class="btn btn-success btn-favor">❤ 收藏</button>
                                 @endif
-
-                                <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
+                            <!-- 秒杀商品下单按钮开始 -->
+                                @if($product->type === \App\Models\Product::TYPE_SECKILL)
+                                    @if(Auth::check())
+                                        @if($product->seckill->is_before_start)
+                                            <button class="btn btn-primary btn-seckill disabled countdown">抢购倒计时
+                                            </button>
+                                        @elseif($product->seckill->is_after_end)
+                                            <button class="btn btn-primary btn-seckill disabled">抢购已结束</button>
+                                        @else
+                                            <button class="btn btn-primary btn-seckill">立即抢购</button>
+                                        @endif
+                                    @else
+                                        <a class="btn btn-primary" href="{{ route('login') }}">请先登录</a>
+                                    @endif
+                                <!-- 秒杀商品下单按钮结束 -->
+                                @else
+                                    <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -97,6 +129,10 @@
 @endsection
 
 @section('scriptsAfterJs')
+    <!-- 如果是秒杀商品并且尚未开始秒杀，则引入 momentjs 类库 -->
+    @if($product->type == \App\Models\Product::TYPE_SECKILL && $product->seckill->is_before_start)
+        <script src="https://cdn.bootcss.com/moment.js/2.22.1/moment.min.js"></script>
+    @endif
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
@@ -104,7 +140,39 @@
                 $('.product-info .price span').text($(this).data('price'));
                 $('.product-info .stock').text('库存：' + $(this).data('stock') + '件');
             });
+            // 加入购物车按钮点击事件
+            $('.btn-add-to-cart').click(function () {
+                // 请求加入购物车接口
+                axios.post('{{ route('cart.add') }}', {
+                    sku_id: $('label.active input[name=skus]').val(),
+                    amount: $('.cart_amount input').val(),
+                })
+                    .then(function () { // 请求成功执行此回调
+                        swal('加入购物车成功', '', 'success');
+                    }, function (error) { // 请求失败执行此回调
+                        if (error.response.status === 401) {
 
+                            // http 状态码为 401 代表用户未登陆
+                            swal('请先登录', '', 'error');
+
+                        } else if (error.response.status === 422) {
+
+                            // http 状态码为 422 代表用户输入校验失败
+                            var html = '<div>';
+                            _.each(error.response.data.errors, function (errors) {
+                                _.each(errors, function (error) {
+                                    html += error + '<br>';
+                                })
+                            });
+                            html += '</div>';
+                            swal({content: $(html)[0], icon: 'error'})
+                        } else {
+
+                            // 其他情况应该是系统挂了
+                            swal('系统错误', '', 'error');
+                        }
+                    })
+            });
             // 监听收藏按钮的点击事件
             $('.btn-favor').click(function () {
                 // 发起一个 post ajax 请求，请求 url 通过后端的 route() 函数生成。
@@ -139,32 +207,83 @@
             });
 
 
-            //加入购物车按钮点击事件
-            $('.btn-add-to-cart').click(function () {
-                //请求加入购物车接口
-                axios.post('{{ route('cart.add') }}', {
-                    sku_id: $('label.active input[name=skus]').val(),
-                    amount: $('.cart_amount input').val(),
-                })
-                    .then(function () {
-                        swal('加入购物车成功', '', 'success');
+            // 如果是秒杀商品并且尚未开始秒杀
+            @if($product->type == \App\Models\Product::TYPE_SECKILL && $product->seckill->is_before_start)
+            // 将秒杀开始时间转成一个 moment 对象
+            var startTime = moment.unix({{ $product->seckill->start_at->getTimestamp() }});
+            // 设定一个定时器
+            var hdl = setInterval(function () {
+                // 获取当前时间
+                var now = moment();
+                // 如果当前时间晚于秒杀开始时间
+                if (now.isAfter(startTime)) {
+                    // 将秒杀按钮上的 disabled 类移除，修改按钮文字
+                    $('.btn-seckill').removeClass('disabled').removeClass('countdown').text('立即抢购');
+                    // 清除定时器
+                    clearInterval(hdl);
+                    return;
+                }
+
+                // 获取当前时间与秒杀开始时间相差的小时、分钟、秒数
+                var hourDiff = startTime.diff(now, 'hours');
+                var minDiff = startTime.diff(now, 'minutes') % 60;
+                var secDiff = startTime.diff(now, 'seconds') % 60;
+                // 修改按钮的文字
+                $('.btn-seckill').text('抢购倒计时 ' + hourDiff + ':' + minDiff + ':' + secDiff);
+            }, 500);
+            @endif
+
+
+            // 秒杀按钮点击事件
+            $('.btn-seckill').click(function () {
+                // 如果秒杀按钮上有 disabled 类，则不做任何操作
+                if ($(this).hasClass('disabled')) {
+                    return;
+                }
+                if (!$('label.active input[name=skus]').val()) {
+                    swal('请先选择商品');
+                    return;
+                }
+                // 把用户的收货地址以 JSON 的形式放入页面，赋值给 addresses 变量
+                var addresses = {!! json_encode(Auth::check() ? Auth::user()->addresses : []) !!};
+                // 使用 jQuery 动态创建一个下拉框
+                var addressSelector = $('<select class="form-control"></select>');
+                // 循环每个收货地址
+                addresses.forEach(function (address) {
+                    // 把当前收货地址添加到收货地址下拉框选项中
+                    addressSelector.append("<option value='" + address.id + "'>" + address.full_address + ' ' + address.contact_name + ' ' + address.contact_phone + '</option>');
+                });
+                // 构建请求参数
+                var req = {
+                    address_id: $('#address').val(),
+                    sku_id: $('label.active input[name=skus]').val()
+                };
+
+                
+                // 调用秒杀商品下单接口
+                axios.post('{{ route('seckill_orders.store') }}', req)
+                    .then(function (response) {
+                        swal('订单提交成功', '', 'success')
+                            .then(() => {
+                                location.href = '/orders/' + response.data.id;
+                            });
                     }, function (error) {
-                        if (error.response.status === 401) {
-                            swal('请先登录', '', 'error');
-                        } else if (error.response.status === 422) {
-                            // http 状态码为 422 代表用户输入校验失败
+                        // 输入参数校验失败，展示失败原因
+                        if (error.response.status === 422) {
                             var html = '<div>';
                             _.each(error.response.data.errors, function (errors) {
                                 _.each(errors, function (error) {
-                                    html += error += '<br>';
+                                    html += error + '<br>';
                                 })
                             });
                             html += '</div>';
-                            swal({content: $(html)[0], icon: 'error'});
+                            swal({content: $(html)[0], icon: 'error'})
+                        } else if (error.response.status === 403) {
+                            swal(error.response.data.msg, '', 'error');
                         } else {
                             swal('系统错误', '', 'error');
                         }
-                    })
+                    });
             });
         });
     </script>

@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('orders/{order}/review', 'OrderController@sendReview')->name('orders.review.store');
         Route::post('orders/{order}/apply_refund', 'OrderController@applyRefund')->name('orders.apply_refund');
         Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
+        Route::post('seckill_orders', 'OrderController@seckill')->name('seckill_orders.store');
     });
 });
 Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');

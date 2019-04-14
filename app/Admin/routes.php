@@ -38,4 +38,10 @@ Route::group([
     $router->put('categories/{id}', 'CategoriesController@update');
     $router->delete('categories/{id}', 'CategoriesController@destroy');
     $router->get('api/categories', 'CategoriesController@apiIndex');
+
+    $router->get('seckill_products', 'SeckillProductsController@index');
+    $router->get('seckill_products/create', 'SeckillProductsController@create');
+    $router->post('seckill_products', 'SeckillProductsController@store');
+    $router->get('seckill_products/{id}/edit', 'SeckillProductsController@edit');
+    $router->put('seckill_products/{id}', 'SeckillProductsController@update');
 });

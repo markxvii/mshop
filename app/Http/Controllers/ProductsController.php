@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\InvalidRequestException;
+use App\Http\Requests\SeckillOrderRequest;
 use App\Models\Category;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductSku;
+use App\Models\UserAddress;
 use App\Services\CategoryService;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
