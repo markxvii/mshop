@@ -96,18 +96,16 @@ class OrderService
     }
 
 
-     public function seckill(User $user, UserAddress $address, ProductSku $sku)
+     public function seckill(User $user, array $addressData, ProductSku $sku)
     {
-        $order = \DB::transaction(function () use ($user, $address, $sku) {
-            // 更新此地址的最后使用时间
-            $address->update(['last_used_at' => Carbon::now()]);
+        $order = \DB::transaction(function () use ($user, $addressData, $sku) {
             // 创建一个订单
             $order = new Order([
                 'address'      => [ // 将地址信息放入订单中
-                    'address'       => $address->full_address,
-                    'zip'           => $address->zip,
-                    'contact_name'  => $address->contact_name,
-                    'contact_phone' => $address->contact_phone,
+                    'address'       => $addressData['province'].$addressData['city'].$addressData['district'].$addressData['address'],
+                    'zip'           => $addressData['zip'],
+                    'contact_name'  => $addressData['contact_name'],
+                    'contact_phone' => $addressData['contact_phone'],
                 ],
                 'remark'       => '',
                 'total_amount' => $sku->price,
@@ -135,6 +133,7 @@ class OrderService
         // 秒杀订单的自动关闭时间与普通订单不同
         dispatch(new CloseOrder($order, config('app.seckill_order_ttl')));
 
+        \Redis::decr('seckill_sku_'.$sku->id);
         return $order;
     }
 }

@@ -43,7 +43,7 @@
                                             class="stock"></span></div>
                             @endif
                             {{--用户收货地址--}}
-                            @if ($product->type === \App\Models\Product::TYPE_SECKILL)
+                            @if (Auth::check() && $product->type === \App\Models\Product::TYPE_SECKILL)
                                 <div class="user_address" style="margin-bottom: 20px;margin-top: 20px"><label
                                             for="address">收货地址</label>
                                     <select name="address_id" id="address" class="form-control">
@@ -246,16 +246,10 @@
                 }
                 // 把用户的收货地址以 JSON 的形式放入页面，赋值给 addresses 变量
                 var addresses = {!! json_encode(Auth::check() ? Auth::user()->addresses : []) !!};
-                // 使用 jQuery 动态创建一个下拉框
-                var addressSelector = $('<select class="form-control"></select>');
-                // 循环每个收货地址
-                addresses.forEach(function (address) {
-                    // 把当前收货地址添加到收货地址下拉框选项中
-                    addressSelector.append("<option value='" + address.id + "'>" + address.full_address + ' ' + address.contact_name + ' ' + address.contact_phone + '</option>');
-                });
+                var address=_.find(addresses, {id: parseInt($('#address').val())});
                 // 构建请求参数
                 var req = {
-                    address_id: $('#address').val(),
+                    address: _.pick(address, ['province', 'city', 'district', 'address', 'zip', 'contact_name', 'contact_phone']),
                     sku_id: $('label.active input[name=skus]').val()
                 };
 
