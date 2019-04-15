@@ -15,7 +15,6 @@ class OrderTableAddType extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('type')->after('id')->default(\App\Models\Order::TYPE_NORMAL)->index();
-
         });
     }
 

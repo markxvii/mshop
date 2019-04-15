@@ -111,7 +111,7 @@ class OrderService
                 ],
                 'remark'       => '',
                 'total_amount' => $sku->price,
-                'type'         => Order::TYPE_SECKILL,
+                'type'         => Order::TYPE_SECKILL
             ]);
             // 订单关联到当前用户
             $order->user()->associate($user);
