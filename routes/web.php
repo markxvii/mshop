@@ -11,7 +11,8 @@
 |
 */
 Route::post('seckill_orders', 'OrderController@seckill')->name('seckill_orders.store')->middleware('random_drop:40');
-Route::get('/', 'ProductsController@index')->name('products.index');
+Route::redirect('/', '/products')->name('root');
+Route::get('/products', 'ProductsController@index')->name('products.index');
 
 Auth::routes();
 
